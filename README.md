@@ -1,4 +1,3 @@
-
 # Extended Research Project on Media Narratives of Capital City Relocation
 
 This repository contains the code and data for the Extended Research Project (ERP) exploring the evolving media narratives surrounding the capital city relocation in Indonesia. The project employs an ensemble of three methodologies to analyze media coverage: Latent Dirichlet Allocation (LDA) for topic modeling, BERT and RoBERTa algorithms for Named Entity Recognition (NER), and sentiment analysis. These methodologies aim to track the evolution of media discourse, identify key influencers, assess public sentiment, and highlight coverage gaps and biases.
@@ -39,14 +38,14 @@ The dataset for this research was gathered through a database under the Indonesi
 - Filters the dataset to include only the 16 media sources specified in the main report and removes the `Time` column.
 - Initial Exploratory Data Analysis (EDA) focuses on general distribution, missing values, and duplicates.
 - A second EDA examines temporal fluctuations and the current state of the data.
-- Preprocessing creates columns for non-lemmatized and lemmatized tokenized text for further analysis.
+- Preprocessing creates columns for non-lemmatized and lemmatized tokenized text for further analysis, generating `Cleaned_Title`, `Cleaned_Summary`, and `text` which is created from `Title` + `Summary`, along with `text_tokenised` and `text_tokenised_stemmed`
 
 ### Topic Modelling
 
 **Code Location:** `erp.ipynb` under "LDA MODELLING"
 
 - Topic modeling using Latent Dirichlet Allocation (LDA) to uncover hidden topics.
-- Trains LDA models with different numbers of topics (2 to 15) to identify the best number of clusters.
+- Trains LDA models with different numbers of topics (2 to 15) to identify the best number of clusters, using `text_tokenised_stemmed` column
 - Saves the optimal model, which has 9 clusters, for further analysis.
 - Adds a `topic` column to the dataset to assign the dominant topic to each row.
 
@@ -57,7 +56,8 @@ The dataset for this research was gathered through a database under the Indonesi
 - Generates a dictionary of actor-role pairs mentioned in the news dataset.
 - Applies the best-performing NER model to the dataset, focusing on the `Cleaned_Summary` column.
 - Associates individuals (PER) with their roles (NOR) or organizations (ORG).
-- Introduces manual analysis to build a model determining whether an individual is affiliated with the government or a non-government entity.
+- Combined with manual analysis through multiple iteration to build a dictionary of `Influencer` and `Role`, which will be cross referenced with the dataset to generate `Extracted_Influencers`
+- Introduces model to determine whether an individual is affiliated with the government or a non-government entity, adding `bias_score` to the dataset (+1 for each government key person mentioned in `Extracted_Influencers`, and -1 of each non-government key person mentioned)
 
 ### Sentiment Analysis
 
@@ -65,7 +65,7 @@ The dataset for this research was gathered through a database under the Indonesi
 
 - Predicts the sentiment of the news titles using a fine-tuned model trained on a manually labeled dataset.
 - Due to large file size, the `model.safetensor` is not uploaded, but the `LABELED_SA.csv` used for training is available.
-- Adds a `topic_name` column to the dataset, with consistent color coding for visual differentiation.
+- Adds `Tone` to the dataset, which reflects the sentiment of the news article
 
 ## Discussion Sections
 
@@ -75,13 +75,14 @@ The dataset for this research was gathered through a database under the Indonesi
 
 - Descriptive names are assigned to LDA-identified topics for readability.
 - Consistent color coding is applied to visually differentiate topics across plots.
+- adds `topic_name` to dataset by determining the name of `topic` through the most prominent keywords
 
 ### Named Entity Recognition Results
 
 **Code Location:** `erp.ipynb` under "ANALYSIS -> OVERALL INFLUENCER"
 
 - Analyzes the distribution of entities mentioned per article, focusing on the number of key people identified.
-- Visualizes the number of influencers per article, with a special category for articles mentioning more than four people.
+- Visualizes the number of influencers per article and grouping articles mentioning four or more people into one bin.
 
 ### Sentiment Analysis Results
 
