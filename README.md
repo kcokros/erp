@@ -101,7 +101,7 @@ The dataset for this research was gathered through a database under the Indonesi
 
 **Code Location:** `erp.ipynb` under "ANALYSIS -> TOPIC FLUCTUATION"
 
-- Analyzes spikes in news coverage across topics, focusing on positive and negative tones.
+- Analyzes spikes in news coverage across topics, focusing on positive and negative tones, generating `spike_analysis.csv`
 - Identifies prominent keywords, tones, and affiliations during spikes.
 - Uses Jaccard similarity to compare keyword overlap in positive vs. negative spikes.
 - Visualizes monthly fluctuations of topics over time, highlighting significant peaks in coverage.
